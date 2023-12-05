@@ -1,0 +1,32 @@
+AllCops:
+  TargetRubyVersion: 2.6
+  Exclude:
+    - "lib/generators/**/templates/*"
+  NewCops: disable
+
+Style/Documentation:
+  Enabled: true
+  Exclude:
+    - "lib/generators/action_sentinel/**"
+    - "spec/*"
+
+Style/StringLiterals:
+  Enabled: true
+  EnforcedStyle: double_quotes
+
+Style/StringLiteralsInInterpolation:
+  Enabled: true
+  EnforcedStyle: double_quotes
+
+Layout/LineLength:
+  Max: 120
+
+Metrics/BlockLength:
+  Enabled: true
+  Exclude:
+    - "spec/**/*"
+
+Naming/HeredocDelimiterNaming:
+  Enabled: true
+  Exclude:
+    - "action_sentinel.gemspec"
