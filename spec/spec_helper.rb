@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require "action_sentinel"
+require "support/active_record"
 
 RSpec.configure do |config|
   # Enable flags like --only-failures and --next-failure

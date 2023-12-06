@@ -1,11 +1,11 @@
 # frozen_string_literal: true
 
-RSpec.describe ActionSentinel do
-  it "has a version number" do
-    expect(ActionSentinel::VERSION).not_to be nil
-  end
+require "spec_helper"
 
-  it "does something useful" do
-    expect(false).to eq(true)
+RSpec.describe ActionSentinel do
+  describe "#action_permissible" do
+    it "includes Permissible module in the calling class" do
+      expect(User.included_modules).to include(ActionSentinel::Permissible)
+    end
   end
 end

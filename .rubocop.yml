@@ -8,7 +8,7 @@ Style/Documentation:
   Enabled: true
   Exclude:
     - "lib/generators/action_sentinel/**"
-    - "spec/*"
+    - "spec/support/*"
 
 Style/StringLiterals:
   Enabled: true
