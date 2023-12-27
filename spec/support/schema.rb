@@ -7,7 +7,7 @@ ActiveRecord::Schema.define do
 
   create_table :access_permissions do |t|
     t.string :controller_name, null: false
-    t.string :actions, null: false, array: true
+    t.string :actions, null: false
     t.references :user, null: false
   end
 

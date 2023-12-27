@@ -40,7 +40,7 @@ The generator will create the AccessPermission model and a migration, and insert
 class AccessPermission < ApplicationRecord
   belongs_to :user
 
-  validates :controller_name, uniqueness: { scope: :group_id }
+  validates :controller_name, uniqueness: { scope: :user_id }
 end
 
 # User model with permissions added
@@ -163,7 +163,7 @@ end
 
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/Null-Bug-Company/action_sentinel.
+Bug reports and pull requests are welcome on GitHub at https://github.com/denisstael/action_sentinel.
 
 ## License
 
