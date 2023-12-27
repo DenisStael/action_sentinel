@@ -10,9 +10,9 @@ module ActionSentinel
     # @raise [UnauthorizedAction] if the user is not authorized.
     # @return [void]
     def authorize_action!
-      return if action_user.has_permission_to?(action_name, controller_name)
+      return if action_user.has_permission_to?(action_name, controller_path)
 
-      raise UnauthorizedAction, "Not allowed to access '#{action_name}' action in #{controller_name}_controller"
+      raise UnauthorizedAction, "Not allowed to access '#{action_name}' action in #{controller_path.camelize}Controller"
     end
 
     # Retrieve the user associated with the current action.

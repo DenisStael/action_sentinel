@@ -10,7 +10,7 @@ RSpec.describe ActionSentinel::Permissible do
       user.add_permissions_to(:create, :update, :users)
       permission = user.access_permissions.last
 
-      expect(permission.controller_name).to eq("users")
+      expect(permission.controller_path).to eq("users")
       expect(permission.actions).to contain_exactly("create", "update")
     end
   end

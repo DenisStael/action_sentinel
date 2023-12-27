@@ -28,10 +28,10 @@ module ActionSentinel
     # Add permissions to the access_permissions association for a specific controller.
     #
     # @param actions [Array<Symbol, String>] The actions to add permissions for.
-    # @param controller_name [String] The name of the controller.
+    # @param controller_path [String] The name of the controller.
     # @return [Boolean] true if the permission was saved, false otherwise.
-    def add_permissions_to(*actions, controller_name)
-      permission = access_permissions.find_or_initialize_by(controller_name: controller_name)
+    def add_permissions_to(*actions, controller_path)
+      permission = access_permissions.find_or_initialize_by(controller_path: controller_path)
       permission.assign_attributes(actions: (permission.actions + sanitize_actions_array(actions)).uniq)
       permission.save
     end
@@ -39,11 +39,11 @@ module ActionSentinel
     # Remove permissions from the access_permissions association for a specific controller.
     #
     # @param actions [Array<Symbol, String>] The actions to remove permissions for.
-    # @param controller_name [String] The name of the controller.
+    # @param controller_path [String] The name of the controller.
     # @return [Boolean, nil] true if the permission was saved, false if it was not or nil
     #   if the permission was not found.
-    def remove_permissions_to(*actions, controller_name)
-      permission = access_permissions.find_by(controller_name: controller_name)
+    def remove_permissions_to(*actions, controller_path)
+      permission = access_permissions.find_by(controller_path: controller_path)
       permission&.update(actions: (permission.actions - sanitize_actions_array(actions)))
     end
 
@@ -52,10 +52,10 @@ module ActionSentinel
     # Check if the model has permission to perform a specific action in a controller.
     #
     # @param action [Symbol, String] The action to check permission for.
-    # @param controller_name [String] The name of the controller.
+    # @param controller_path [String] The name of the controller.
     # @return [Boolean] true if the model has permission, false otherwise.
-    def has_permission_to?(action, controller_name)
-      query = access_permissions.where(controller_name: controller_name)
+    def has_permission_to?(action, controller_path)
+      query = access_permissions.where(controller_path: controller_path)
 
       query = if %w[sqlite sqlite3].include? self.class.connection.adapter_name.downcase
                 query.where("actions LIKE ?", "%#{action}%")

@@ -15,7 +15,7 @@ end
 class AccessPermission < ActiveRecord::Base
   belongs_to :user
 
-  validates :controller_name, uniqueness: { scope: :user_id }
+  validates :controller_path, uniqueness: { scope: :user_id }
 
   # The lines below are to sqlite database only
   serialize :actions

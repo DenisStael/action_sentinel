@@ -40,7 +40,7 @@ The generator will create the AccessPermission model and a migration, and insert
 class AccessPermission < ApplicationRecord
   belongs_to :user
 
-  validates :controller_name, uniqueness: { scope: :user_id }
+  validates :controller_path, uniqueness: { scope: :user_id }
 end
 
 # User model with permissions added
@@ -79,9 +79,9 @@ user.add_permissions_to 'show', 'users'
 # Adding permissions to access create and update actions in UsersController
 user.add_permissions_to 'create', 'update', 'users'
 ```
-_The arguments must be related to the actions of a controller, and the last argument is the name of the controller. The actions arguments must be in downcase format and must be equal to the actions methods of the controller. The controller argument, must be in downcase and plural format, ignoring the "Controller" prefix._
+The arguments must be related to the actions of a controller, and the last argument is the name of the controller. The actions arguments must be in downcase format and must be equal to the actions methods of the controller. The controller argument, must be in downcase and plural format, ignoring the "Controller" suffix. 
 
-_For example: a controller called `UsersController` must be passed just as `users`._
+For example, a controller called `UsersController` must be passed just as `users`.
 
 Also is possible to pass the arguments as symbols:
 ```ruby
@@ -106,6 +106,21 @@ To check if the user has permission to access an action from a controller, you j
 
 ```ruby
 user.has_permission_to? 'create', 'users'
+```
+
+### Scoped Controllers
+
+For controllers that are scoped in a module, its argument also must be informed in the same downcase and plural format, but with the prefix of the module separated by a slash. For example, a controller called `Api::UsersController` must be passed as `api/users`:
+
+```ruby
+# Adding permissions
+user.add_permissions_to 'create', 'update', 'api/users'
+
+# Removing permissions
+user.remove_permissions_to 'create', 'update', 'api/users'
+
+# Checking permission
+user.has_permission_to? 'create', 'api/users'
 ```
 
 ## Authorization
@@ -143,7 +158,6 @@ end
 ```
 
 ### Rescuing an UnauthorizedAction in ApplicationController
----
 
 Action Sentinel raises an `ActionSentinel::UnauthorizedAction` if the user does not have the permission to access an action. You can rescue this error and respond in your customized format using `rescue_from` in your `ApplicationController`:
 

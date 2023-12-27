@@ -10,12 +10,12 @@ class ApplicationController
     @action_name = action_name
   end
 
-  def self.controller_name
-    @controller_name ||= name.demodulize.sub(/Controller$/, "").underscore
+  def self.controller_path
+    @controller_path ||= name.demodulize.sub(/Controller$/, "").underscore
   end
 
-  def controller_name
-    self.class.controller_name
+  def controller_path
+    self.class.controller_path
   end
 end
 

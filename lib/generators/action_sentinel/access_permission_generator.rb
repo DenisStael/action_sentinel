@@ -29,8 +29,12 @@ module ActionSentinel
       template "access_permission.rb", File.join("app", "models", "access_permission.rb")
     end
 
-    def table_id_type
+    def primary_key_type
       options.uuid? ? ", id: :uuid" : ""
+    end
+
+    def foreign_key_type
+      options.uuid? ? ", type: :uuid" : ""
     end
 
     def generate_migration
@@ -52,7 +56,7 @@ module ActionSentinel
     def inject_action_permissible_into_model
       model_file = File.join("app", "models", "#{singular_model_name}.rb")
       inject_into_class(model_file, model_class) do
-        "\taction_permissible\n\n"
+        "\taction_permissible\n"
       end
     end
   end
