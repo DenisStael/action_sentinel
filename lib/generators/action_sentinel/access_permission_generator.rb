@@ -2,6 +2,7 @@
 
 require "rails/generators"
 require "rails/generators/active_record"
+require "logger"
 
 module ActionSentinel
   class AccessPermissionGenerator < Rails::Generators::Base
@@ -18,12 +19,26 @@ module ActionSentinel
     end
 
     def create_access_pemission_and_migration
-      inject_action_permissible_into_model
-      generate_access_permission
-      generate_migration
+      model_file = File.join("app", "models", "#{singular_model_name}.rb")
+
+      if File.exist?(model_file) || revoke_process?
+        inject_action_permissible_into_model(model_file)
+        generate_access_permission
+        generate_migration
+      else
+        logger.info("The file #{model_file} does not appear to exist")
+      end
     end
 
     private
+
+    def logger
+      Logger.new($stdout)
+    end
+
+    def revoke_process?
+      behavior == :revoke
+    end
 
     def generate_access_permission
       template "access_permission.rb", File.join("app", "models", "access_permission.rb")
@@ -53,10 +68,13 @@ module ActionSentinel
       "[#{Rails::VERSION::MAJOR}.#{Rails::VERSION::MINOR}]"
     end
 
-    def inject_action_permissible_into_model
-      model_file = File.join("app", "models", "#{singular_model_name}.rb")
-      inject_into_class(model_file, model_class) do
-        "\taction_permissible\n"
+    def inject_action_permissible_into_model(model_file)
+      if File.exist?(model_file)
+        inject_into_class(model_file, model_class) do
+          "\taction_permissible\n"
+        end
+      else
+        logger.info("The file #{model_file} does not appear to exist")
       end
     end
   end
